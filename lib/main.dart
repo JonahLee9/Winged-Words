@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'credits.dart';
 import 'subjects.dart';
+import 'settings.dart';
 
 void main() {
   runApp(const MainApp());
@@ -64,7 +65,8 @@ class MenuPage extends StatelessWidget {
                       // Navigate to Subjects Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SubjectsPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const SubjectsPage()),
                       );
                     },
                   ),
@@ -73,13 +75,14 @@ class MenuPage extends StatelessWidget {
                   // Settings Button
                   MenuButton(
                     text: 'Settings',
-                    iconUrl:
-                        'https://www.svgrepo.com/show/17716/gear.svg',
+                    iconUrl: 'https://www.svgrepo.com/show/17716/gear.svg',
                     onPressed: () {
                       // Navigate to Settings Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const PlaceholderPage('Settings')),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const SettingsPage()),
                       );
                     },
                   ),
@@ -94,7 +97,8 @@ class MenuPage extends StatelessWidget {
                       // Navigate to Credits Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CreditsPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const CreditsPage()),
                       );
                     },
                   ),
@@ -154,7 +158,6 @@ class MenuButton extends StatelessWidget {
     );
   }
 }
-
 
 // Placeholder Page for Navigation
 class PlaceholderPage extends StatelessWidget {

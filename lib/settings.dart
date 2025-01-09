@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
 }
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -23,17 +24,15 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isMusicEnabled = false;
   bool isSfxEnabled = true;
   double volume = 0.5;
-  AudioPlayer musicPlayer = AudioPlayer();
-  AudioPlayer buttonPlayer = AudioPlayer();
+  late AudioPlayer musicPlayer;
+  late AudioPlayer buttonPlayer;
 
   @override
   void initState() {
     super.initState();
+    musicPlayer = AudioPlayer();
+    buttonPlayer = AudioPlayer();
     loadPreferences();
-    musicPlayer.setSource(UrlSource(
-        'https://www.dropbox.com/scl/fi/g5sreszvsrab6kdyof48y/Sunset-Samba-1.mp3?rlkey=6k8tkwi3cahp7wihm0bbhgz5m&st=p5bals5a&raw=1'));
-    buttonPlayer.setSource(UrlSource(
-        'https://www.dropbox.com/scl/fi/u52y5ra4inx16jsp521ul/click-buttons-ui-menu-sounds-effects-button-7-203601.mp3?rlkey=shlabmmrayjdes7ytyj1t048i&st=q7zzwu4o&raw=1'));
   }
 
   Future<void> loadPreferences() async {
@@ -44,8 +43,10 @@ class _SettingsPageState extends State<SettingsPage> {
       volume = prefs.getDouble('musicVolume') ?? 0.5;
     });
     if (isMusicEnabled) {
-      musicPlayer.setVolume(volume);
-      musicPlayer.resume();
+      await musicPlayer.setSourceUrl(
+          'https://www.dropbox.com/scl/fi/g5sreszvsrab6kdyof48y/Sunset-Samba-1.mp3?rlkey=6k8tkwi3cahp7wihm0bbhgz5m&st=p5bals5a&raw=1');
+      await musicPlayer.setVolume(volume);
+      await musicPlayer.resume();
     }
   }
 
@@ -85,16 +86,19 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: isMusicEnabled ? Colors.green : Colors.red,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
                           isMusicEnabled = !isMusicEnabled;
-                          if (isMusicEnabled) {
-                            musicPlayer.resume();
-                          } else {
-                            musicPlayer.pause();
-                          }
-                          savePreferences();
                         });
+                        if (isMusicEnabled) {
+                          await musicPlayer.setSourceUrl(
+                              'https://www.dropbox.com/scl/fi/g5sreszvsrab6kdyof48y/Sunset-Samba-1.mp3?rlkey=6k8tkwi3cahp7wihm0bbhgz5m&st=p5bals5a&raw=1');
+                          await musicPlayer.setVolume(volume);
+                          await musicPlayer.resume();
+                        } else {
+                          await musicPlayer.pause();
+                        }
+                        savePreferences();
                       },
                       child: Text(
                         isMusicEnabled ? 'Turn Music Off' : 'Turn Music On',
@@ -108,12 +112,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           value: volume,
                           min: 0,
                           max: 1,
-                          onChanged: (newVolume) {
+                          onChanged: (newVolume) async {
                             setState(() {
                               volume = newVolume;
-                              musicPlayer.setVolume(volume);
-                              savePreferences();
                             });
+                            await musicPlayer.setVolume(volume);
+                            savePreferences();
                           },
                         ),
                         Text('100'),
@@ -135,6 +139,10 @@ class _SettingsPageState extends State<SettingsPage> {
                           onChanged: (value) {
                             setState(() {
                               isSfxEnabled = value;
+                              if (isSfxEnabled) {
+                                buttonPlayer.play(UrlSource(
+                                    'https://www.dropbox.com/scl/fi/u52y5ra4inx16jsp521ul/click-buttons-ui-menu-sounds-effects-button-7-203601.mp3?rlkey=shlabmmrayjdes7ytyj1t048i&st=q7zzwu4o&raw=1'));
+                              }
                               savePreferences();
                             });
                           },
