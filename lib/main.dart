@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'credits.dart';
+import 'subjects.dart';
 
 void main() {
   runApp(const MainApp());
@@ -63,7 +64,7 @@ class MenuPage extends StatelessWidget {
                       // Navigate to Subjects Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const PlaceholderPage('Subjects')),
+                        MaterialPageRoute(builder: (context) => const SubjectsPage()),
                       );
                     },
                   ),
