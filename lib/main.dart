@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
+import 'credits.dart';
 
 void main() {
-  runApp(EducationGameApp());
+  runApp(const MainApp());
 }
 
-class EducationGameApp extends StatelessWidget {
+class MainApp extends StatelessWidget {
+  const MainApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Education Game',
-      theme: ThemeData(
-        fontFamily: 'Baloo2',
-      ),
-      home: MenuPage(),
+      theme: ThemeData(fontFamily: 'Baloo 2'),
+      home: const MenuPage(),
     );
   }
 }
 
 class MenuPage extends StatelessWidget {
+  const MenuPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/background.jpg'),
+            image: NetworkImage(
+              'https://t4.ftcdn.net/jpg/02/35/01/83/360_F_235018350_NwKA1B9koCLcptK9P1B4WznO19dIQPhe.jpg',
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -32,37 +38,66 @@ class MenuPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Winged Words \n & Equations',
+              // Title Bar
+              const Text(
+                'Winged Words\n& Equations',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 50,
                   color: Colors.orange,
                   fontWeight: FontWeight.bold,
-                  height: 1.2,
+                  height: 1.2, // Adjust spacing between lines
                 ),
               ),
-              SizedBox(height: 20),
-              MenuButton(
-                icon: Icons.play_arrow,
-                text: 'Play',
-                onPressed: () {
-                  // Navigate to SubjectsPage
-                },
-              ),
-              MenuButton(
-                icon: Icons.settings,
-                text: 'Settings',
-                onPressed: () {
-                  // Navigate to SettingsPage
-                },
-              ),
-              MenuButton(
-                icon: Icons.info,
-                text: 'Credits',
-                onPressed: () {
-                  // Navigate to CreditsPage
-                },
+              const SizedBox(height: 40),
+
+              // Menu Buttons
+              Column(
+                children: [
+                  // Play Button
+                  MenuButton(
+                    text: 'Play',
+                    iconUrl:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHrlx0XnBZ0SYe-N_V35TbZ2-tve-_wz4avQ&s',
+                    onPressed: () {
+                      // Navigate to Subjects Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const PlaceholderPage('Subjects')),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 15),
+
+                  // Settings Button
+                  MenuButton(
+                    text: 'Settings',
+                    iconUrl:
+                        'https://www.svgrepo.com/show/17716/gear.svg',
+                    onPressed: () {
+                      // Navigate to Settings Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const PlaceholderPage('Settings')),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 15),
+
+                  // Credits Button
+                  MenuButton(
+                    text: 'Credits',
+                    iconUrl:
+                        'https://png.pngtree.com/element_our/20190529/ourmid/pngtree-medical-drug-list-illustration-image_1217997.jpg',
+                    onPressed: () {
+                      // Navigate to Credits Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CreditsPage()),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -72,26 +107,71 @@ class MenuPage extends StatelessWidget {
   }
 }
 
+// Menu Button Widget
 class MenuButton extends StatelessWidget {
-  final IconData icon;
   final String text;
+  final String iconUrl;
   final VoidCallback onPressed;
 
-  MenuButton({required this.icon, required this.text, required this.onPressed});
+  const MenuButton({
+    Key? key,
+    required this.text,
+    required this.iconUrl,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
+    return ElevatedButton(
       onPressed: onPressed,
-      icon: Icon(icon, size: 25),
-      label: Text(
-        text,
-        style: TextStyle(fontSize: 22),
-      ),
       style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+        backgroundColor: const Color(0xFF28A745), // Updated property
+        padding: const EdgeInsets.symmetric(vertical: 20),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
+        ),
+        elevation: 3,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.network(
+            iconUrl,
+            width: 25,
+            height: 25,
+          ),
+          const SizedBox(width: 10),
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 22,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+// Placeholder Page for Navigation
+class PlaceholderPage extends StatelessWidget {
+  final String title;
+
+  const PlaceholderPage(this.title, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: const Color(0xFF28A745),
+      ),
+      body: Center(
+        child: Text(
+          '$title Page',
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );
