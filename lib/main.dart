@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'credits.dart';
 import 'subjects.dart';
-import 'settings.dart';
 
 void main() {
   runApp(const MainApp());
@@ -82,7 +81,7 @@ class MenuPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const SettingsPage()),
+                                const CreditsPage()),
                       );
                     },
                   ),
