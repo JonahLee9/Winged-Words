@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // Replace with the actual menu page file
-
+import 'package:myapp/english_difficulty.dart';
+import 'math_difficulty.dart';
+import 'english_difficulty.dart';
 
 class SubjectsPage extends StatelessWidget {
-  const SubjectsPage({Key? key}) : super(key: key);
+  const SubjectsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class SubjectsPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PlaceholderPage('Math'),
+                        builder: (context) => const MathDifficulty(),
                       ),
                     );
                   },
@@ -76,7 +77,7 @@ class SubjectsPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PlaceholderPage('English'),
+                        builder: (context) => const EnglishDifficulty(),
                       ),
                     );
                   },

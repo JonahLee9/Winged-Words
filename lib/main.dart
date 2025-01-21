@@ -7,7 +7,7 @@ void main() {
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({Key? key}) : super(key: key);
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
 }
 
 class MenuPage extends StatelessWidget {
-  const MenuPage({Key? key}) : super(key: key);
+  const MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class MenuPage extends StatelessWidget {
                   // Settings Button
                   MenuButton(
                     text: 'Settings',
-                    iconUrl: 'https://www.svgrepo.com/show/17716/gear.svg',
+                    iconUrl: 'https://png.pngtree.com/png-clipart/20190920/original/pngtree-cartoon-gear-icon-download-png-image_4602942.jpg',
                     onPressed: () {
                       // Navigate to Settings Page
                       Navigator.push(
@@ -118,11 +118,11 @@ class MenuButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const MenuButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.iconUrl,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,7 @@ class MenuButton extends StatelessWidget {
 class PlaceholderPage extends StatelessWidget {
   final String title;
 
-  const PlaceholderPage(this.title, {Key? key}) : super(key: key);
+  const PlaceholderPage(this.title, {super.key});
 
   @override
   Widget build(BuildContext context) {

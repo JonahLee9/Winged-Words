@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CreditsPage extends StatelessWidget {
-  const CreditsPage({Key? key}) : super(key: key);
+  const CreditsPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +9,7 @@ class CreditsPage extends StatelessWidget {
         children: [
           // Background
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
                   'https://media.istockphoto.com/id/1344646630/vector/summer-forest-landscape-swampy-coast-with-cattails-and-reed-flat-style-quiet-river-or-lake.jpg?s=1024x1024&w=is&k=20&c=npKkdkMtQABmnKFHppY1Eh5wFTSEYIX9Wwg9yReWqAY=',
@@ -31,7 +31,7 @@ class CreditsPage extends StatelessWidget {
                   BoxShadow(
                     color: Colors.black.withOpacity(0.4),
                     blurRadius: 16,
-                    offset: Offset(0, 8),
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
@@ -40,7 +40,7 @@ class CreditsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Header
-                    Text(
+                    const Text(
                       'Credits',
                       style: TextStyle(
                         fontSize: 25,
@@ -48,25 +48,25 @@ class CreditsPage extends StatelessWidget {
                         color: Color(0xFF009624),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // Developers & Designers Section
                     CreditsSection(
                       title: 'Developers & Designers',
-                      items: ['Lyam Arencibia-Herrera', 'Jonah Lee', 'Eduardo Ramos'],
+                      items: const ['Lyam Arencibia-Herrera', 'Jonah Lee', 'Eduardo Ramos'],
                     ),
 
                     // Special Thanks Section
                     CreditsSection(
                       title: 'Special Thanks',
-                      items: ['Mr. Davisson'],
+                      items: const ['Mr. Davisson'],
                     ),
 
                     // About Us Section
                     AboutUsSection(),
 
                     // Footer
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Footer(),
                   ],
                 ),
@@ -90,7 +90,7 @@ class CreditsSection extends StatelessWidget {
   final String title;
   final List<String> items;
 
-  CreditsSection({required this.title, required this.items});
+  const CreditsSection({super.key, required this.title, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -99,30 +99,32 @@ class CreditsSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Color(0xFF009624),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         ...items.map((item) => Padding(
               padding: const EdgeInsets.only(bottom: 5),
               child: Text(
                 item,
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             )),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
 }
 
 class AboutUsSection extends StatelessWidget {
+  const AboutUsSection({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         Text(
           'About Us',
@@ -143,9 +145,11 @@ class AboutUsSection extends StatelessWidget {
 }
 
 class Footer extends StatelessWidget {
+  const Footer({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         Text(
           '© 2024 Winged Words & Equations',
@@ -164,6 +168,8 @@ class Footer extends StatelessWidget {
 }
 
 class BackButtonWidget extends StatelessWidget {
+  const BackButtonWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -172,10 +178,10 @@ class BackButtonWidget extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.brown,
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
-      child: Text(
+      child: const Text(
         'Back',
         style: TextStyle(fontSize: 16, color: Colors.white),
       ),
