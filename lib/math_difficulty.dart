@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
 class MathDifficulty extends StatelessWidget {
-  const MathDifficulty({Key? key}) : super(key: key);
+  const MathDifficulty({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Use a Stack to add a fixed background image and overlay content
       body: Stack(
         children: [
           // Background Image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
                     'https://st2.depositphotos.com/1526816/11268/v/450/depositphotos_112683892-stock-illustration-scene-with-many-toucans-flying.jpg'),
@@ -25,7 +24,6 @@ class MathDifficulty extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Large Title
                 Text(
                   'MATH',
                   style: TextStyle(
@@ -36,13 +34,12 @@ class MathDifficulty extends StatelessWidget {
                       Shadow(
                         blurRadius: 6.0,
                         color: Colors.black.withOpacity(0.7),
-                        offset: Offset(2, 2),
+                        offset: const Offset(2, 2),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
-                // Subheading
+                const SizedBox(height: 20),
                 Text(
                   'Select\nDifficulty',
                   textAlign: TextAlign.center,
@@ -55,13 +52,12 @@ class MathDifficulty extends StatelessWidget {
                       Shadow(
                         blurRadius: 4.0,
                         color: Colors.black.withOpacity(0.7),
-                        offset: Offset(2, 2),
+                        offset: const Offset(2, 2),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 30),
-                // Difficulty Buttons
+                const SizedBox(height: 30),
                 Column(
                   children: [
                     _buildDifficultyButton(
@@ -70,14 +66,14 @@ class MathDifficulty extends StatelessWidget {
                       Colors.green,
                       '/MathEasy',
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildDifficultyButton(
                       context,
                       'Medium Mode',
                       Colors.green,
                       '/MathMedium',
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     _buildDifficultyButton(
                       context,
                       'Hard Mode',
@@ -86,8 +82,7 @@ class MathDifficulty extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                // Back Button
+                const SizedBox(height: 20),
                 _buildBackButton(context),
               ],
             ),
@@ -97,48 +92,46 @@ class MathDifficulty extends StatelessWidget {
     );
   }
 
-  // Helper function to create difficulty buttons
   Widget _buildDifficultyButton(
       BuildContext context, String label, Color color, String route) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: color, // Updated from `primary`
-        foregroundColor: Colors.white, // Updated from `onPrimary`
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 18,
           fontFamily: 'Baloo2',
         ),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, route); // Navigate to the specific route
+        Navigator.pushNamed(context, route);
       },
       child: Text(label),
     );
   }
 
-  // Helper function to create the back button
   Widget _buildBackButton(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.red, // Updated from `primary`
-        foregroundColor: Colors.white, // Updated from `onPrimary`
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 18,
           fontFamily: 'Baloo2',
         ),
       ),
       onPressed: () {
-        Navigator.pop(context); // Navigate back to the previous page
+        Navigator.pop(context);
       },
-      child: Text('Back'),
+      child: const Text('Back'),
     );
   }
 }

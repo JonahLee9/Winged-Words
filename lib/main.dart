@@ -1,182 +1,155 @@
 import 'package:flutter/material.dart';
-import 'credits.dart';
+import 'dart:math';
 import 'subjects.dart';
+import 'credits.dart';
+// Needed for rotation in radians
 
 void main() {
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Education Game',
-      theme: ThemeData(fontFamily: 'Baloo 2'),
-      home: const MenuPage(),
+      home: const BackgroundScreen(),
     );
   }
 }
 
-class MenuPage extends StatelessWidget {
-  const MenuPage({super.key});
+class BackgroundScreen extends StatelessWidget {
+  const BackgroundScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              'https://t4.ftcdn.net/jpg/02/35/01/83/360_F_235018350_NwKA1B9koCLcptK9P1B4WznO19dIQPhe.jpg',
-            ),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double screenWidth = constraints.maxWidth;
+          double screenHeight = constraints.maxHeight;
+
+          return Stack(
             children: [
-              // Title Bar
-              const Text(
-                'Winged Words\n& Equations',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 50,
-                  color: Colors.orange,
-                  fontWeight: FontWeight.bold,
-                  height: 1.2, // Adjust spacing between lines
+              // Background Image
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/home.png',
+                  fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(height: 40),
 
-              // Menu Buttons
-              Column(
-                children: [
-                  // Play Button
-                  MenuButton(
-                    text: 'Play',
-                    iconUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHrlx0XnBZ0SYe-N_V35TbZ2-tve-_wz4avQ&s',
-                    onPressed: () {
-                      // Navigate to Subjects Page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SubjectsPage()),
-                      );
-                    },
+              // Play Button (Responsive)
+              Positioned(
+                left: screenWidth * 0.08, // 13% of screen width
+                top: screenHeight * 0.28, // 24% of screen height
+                width: screenWidth * 0.25, // 35% of screen width
+                height: screenHeight * 0.11, // 7% of screen height
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SubjectsPage()),
+                    );
+                  },
+                  child: Transform.rotate(
+                    angle: -0.1, // Adjust rotation angle in radians
+                    child: Container(
+                      color: Colors.red.withOpacity(0.3), // Debugging overlay
+                    ),
                   ),
-                  const SizedBox(height: 15),
+                ),
+              ),
 
-                  // Settings Button
-                  MenuButton(
-                    text: 'Settings',
-                    iconUrl: 'https://png.pngtree.com/png-clipart/20190920/original/pngtree-cartoon-gear-icon-download-png-image_4602942.jpg',
-                    onPressed: () {
-                      // Navigate to Settings Page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const CreditsPage()),
-                      );
-                    },
+              // Settings Button (Responsive)
+              Positioned(
+                left: screenWidth * 0.05,
+                top: screenHeight * 0.45,
+                width: screenWidth * 0.27,
+                height: screenHeight * 0.11,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsScreen()),
+                    );
+                  },
+                  child: Transform.rotate(
+                    angle: -0.05, // Adjust rotation angle
+                    child: Container(
+                      color: Colors.blue.withOpacity(0.3),
+                    ),
                   ),
-                  const SizedBox(height: 15),
+                ),
+              ),
 
-                  // Credits Button
-                  MenuButton(
-                    text: 'Credits',
-                    iconUrl:
-                        'https://png.pngtree.com/element_our/20190529/ourmid/pngtree-medical-drug-list-illustration-image_1217997.jpg',
-                    onPressed: () {
-                      // Navigate to Credits Page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreditsPage()),
-                      );
-                    },
+              // Credits Button (Responsive)
+              Positioned(
+                left: screenWidth * 0.07,
+                top: screenHeight * 0.60,
+                width: screenWidth * 0.25,
+                height: screenHeight * 0.10,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CreditsPage()),
+                    );
+                  },
+                  child: Transform.rotate(
+                    angle: 0, // No rotation needed
+                    child: Container(
+                      color: Colors.green.withOpacity(0.3),
+                    ),
                   ),
-                ],
+                ),
               ),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 }
 
-// Menu Button Widget
-class MenuButton extends StatelessWidget {
-  final String text;
-  final String iconUrl;
-  final VoidCallback onPressed;
-
-  const MenuButton({
-    super.key,
-    required this.text,
-    required this.iconUrl,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF28A745), // Updated property
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        elevation: 3,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.network(
-            iconUrl,
-            width: 25,
-            height: 25,
-          ),
-          const SizedBox(width: 10),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 22,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Placeholder Page for Navigation
-class PlaceholderPage extends StatelessWidget {
-  final String title;
-
-  const PlaceholderPage(this.title, {super.key});
+// Placeholder Screens
+class PlayScreen extends StatelessWidget {
+  const PlayScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        backgroundColor: const Color(0xFF28A745),
-      ),
-      body: Center(
-        child: Text(
-          '$title Page',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
+      appBar: AppBar(title: const Text('Play')),
+      body: const Center(child: Text('Play Screen')),
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Settings')),
+      body: const Center(child: Text('Settings Screen')),
+    );
+  }
+}
+
+class CreditsScreen extends StatelessWidget {
+  const CreditsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Credits')),
+      body: const Center(child: Text('Credits Screen')),
     );
   }
 }
