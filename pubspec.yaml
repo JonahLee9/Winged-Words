@@ -56,6 +56,9 @@ flutter:
     - assets/home.png
     - assets/credits.png
     - assets/subjects.png
+    - assets/settings.png
+    - assets/englishdifficulty.png
+    - assets/mathdifficulty.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
