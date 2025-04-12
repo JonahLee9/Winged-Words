@@ -23,43 +23,54 @@ class BackgroundScreen extends StatelessWidget {
         builder: (context, constraints) {
           double screenWidth = constraints.maxWidth;
           double screenHeight = constraints.maxHeight;
+          double aspectRatio = 448 / 207; // Set this to match your actual image aspect ratio
 
-          return Stack(
-            children: [
-              // Background Image
-              Positioned.fill(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/credits.png'),
-                      fit: BoxFit.cover, // Covers the whole screen
-                    ),
+          return Center(
+            child: SizedBox(
+              width: screenWidth,
+              height: screenHeight,
+              child: FittedBox(
+                fit: BoxFit.fill, // Makes sure it expands to fill the screen
+                child: SizedBox(
+                  width: screenWidth,
+                  height: screenWidth / aspectRatio, // Maintain image aspect ratio
+                  child: Stack(
+                    children: [
+                      // ✅ Background Image (Expands to fit)
+                      Positioned.fill(
+                        child: Image.asset(
+                          'assets/credits.png',
+                          fit: BoxFit.cover, // This fills the screen while keeping the ratio
+                        ),
+                      ),
+
+                      // ✅ Back Button
+                      Positioned(
+                        left: screenWidth * 0.04,
+                        top: (screenWidth / aspectRatio) * 0.731,
+                        width: screenWidth * 0.18,
+                        height: (screenWidth / aspectRatio) * 0.125,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MyApp()),
+                            );
+                          },
+                          child: Transform.rotate(
+                            angle: -0.15,
+                            child: Container(
+                              color: Colors.red.withOpacity(0.3),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-
-              // Invisible Back Button (Responsive to screen size)
-              Positioned(
-                left: screenWidth * 0.02, // 5% from left
-                bottom: screenHeight * 0.15, // 5% from bottom
-                width: screenWidth * 0.18, // 20% of screen width
-                height: screenHeight * 0.11, // 8% of screen height
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MyApp()),
-                    );
-                  },
-                  child: Transform.rotate(
-                    angle: -0.12, // Adjust rotation angle in radians
-                    child: Container(
-                      color: Colors.red.withOpacity(0.3), // Debugging overlay
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           );
         },
       ),

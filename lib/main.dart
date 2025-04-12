@@ -29,14 +29,14 @@ class BackgroundScreen extends StatelessWidget {
         builder: (context, constraints) {
           double screenWidth = constraints.maxWidth;
           double screenHeight = constraints.maxHeight;
-          double aspectRatio = 16 / 9; // Set this to match your actual image aspect ratio
+          double aspectRatio = 448 / 207; // Set this to match your actual image aspect ratio
 
           return Center(
             child: SizedBox(
               width: screenWidth,
               height: screenHeight,
               child: FittedBox(
-                fit: BoxFit.cover, // Makes sure it expands to fill the screen
+                fit: BoxFit.fill, // Makes sure it expands to fill the screen
                 child: SizedBox(
                   width: screenWidth,
                   height: screenWidth / aspectRatio, // Maintain image aspect ratio
@@ -52,9 +52,9 @@ class BackgroundScreen extends StatelessWidget {
 
                       // ✅ Play Button
                       Positioned(
-                        left: screenWidth * 0.03,
+                        left: screenWidth * 0.11,
                         top: (screenWidth / aspectRatio) * 0.29,
-                        width: screenWidth * 0.28,
+                        width: screenWidth * 0.25,
                         height: (screenWidth / aspectRatio) * 0.1,
                         child: GestureDetector(
                           onTap: () {
@@ -75,9 +75,9 @@ class BackgroundScreen extends StatelessWidget {
 
                       // ✅ Settings Button
                       Positioned(
-                        left: screenWidth * 0.0,
+                        left: screenWidth * 0.075,
                         top: (screenWidth / aspectRatio) * 0.45,
-                        width: screenWidth * 0.3,
+                        width: screenWidth * 0.265,
                         height: (screenWidth / aspectRatio) * 0.1,
                         child: GestureDetector(
                           onTap: () {
@@ -98,9 +98,9 @@ class BackgroundScreen extends StatelessWidget {
 
                       // ✅ Credits Button
                       Positioned(
-                        left: screenWidth * 0.01,
+                        left: screenWidth * 0.09,
                         top: (screenWidth / aspectRatio) * 0.6,
-                        width: screenWidth * 0.29,
+                        width: screenWidth * 0.262,
                         height: (screenWidth / aspectRatio) * 0.10,
                         child: GestureDetector(
                           onTap: () {
