@@ -30,7 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_svg: ^2.0.7  # Check pub.dev for the latest version
+  audioplayers: ^0.20.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -53,12 +54,21 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/home.png
-    - assets/credits.png
-    - assets/subjects.png
-    - assets/settings.png
-    - assets/englishdifficulty.png
-    - assets/mathdifficulty.png
+    - assets/home.svg
+    - assets/credits.svg
+    - assets/subjects.svg
+    - assets/settings.svg
+    - assets/englishdifficulty.svg
+    - assets/mathdifficulty.svg
+    - assets/mathpage.svg
+    - assets/bush.png
+    - assets/birdsign.png
+    - assets/music/music.mp3
+
+  fonts:
+    - family: Pangolin
+      fonts:
+        - asset: assets/fonts/Pangolin-Regular.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

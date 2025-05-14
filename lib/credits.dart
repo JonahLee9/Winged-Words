@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CreditsPage extends StatelessWidget {
   const CreditsPage({super.key});
@@ -38,8 +39,8 @@ class BackgroundScreen extends StatelessWidget {
                     children: [
                       // ✅ Background Image (Expands to fit)
                       Positioned.fill(
-                        child: Image.asset(
-                          'assets/credits.png',
+                        child: SvgPicture.asset(
+                          'assets/credits.svg',
                           fit: BoxFit.cover, // This fills the screen while keeping the ratio
                         ),
                       ),

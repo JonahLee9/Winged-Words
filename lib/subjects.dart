@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/main.dart';
 import 'math_difficulty.dart';
 import 'english_difficulty.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SubjectsPage extends StatelessWidget {
   const SubjectsPage({super.key});
@@ -40,8 +41,8 @@ class BackgroundScreen extends StatelessWidget {
                     children: [
                       // ✅ Background Image (Expands to fit)
                       Positioned.fill(
-                        child: Image.asset(
-                          'assets/subjects.png',
+                        child: SvgPicture.asset(
+                          'assets/subjects.svg',
                           fit: BoxFit.cover, // This fills the screen while keeping the ratio
                         ),
                       ),
@@ -63,7 +64,7 @@ class BackgroundScreen extends StatelessWidget {
                           child: Transform.rotate(
                             angle: -0.12,
                             child: Container(
-                              color: Colors.red.withOpacity(0.3),
+                              color: Colors.red.withOpacity(0.0),
                             ),
                           ),
                         ),
@@ -87,7 +88,7 @@ class BackgroundScreen extends StatelessWidget {
                           child: Transform.rotate(
                             angle: 0.1,
                             child: Container(
-                              color: Colors.green.withOpacity(0.3),
+                              color: Colors.green.withOpacity(0.0),
                             ),
                           ),
                         ),
@@ -109,7 +110,7 @@ class BackgroundScreen extends StatelessWidget {
                           child: Transform.rotate(
                             angle: -0.05,
                             child: Container(
-                              color: Colors.blue.withOpacity(0.3),
+                              color: Colors.blue.withOpacity(0.0),
                             ),
                           ),
                         ),

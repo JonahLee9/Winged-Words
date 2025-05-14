@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'english_easy.dart'; // ✅ Import the Easy page
+import 'package:flutter_svg/flutter_svg.dart';
 
 class EnglishDifficulty extends StatelessWidget {
   const EnglishDifficulty({super.key});
@@ -38,34 +40,36 @@ class BackgroundScreen extends StatelessWidget {
                     children: [
                       // ✅ Background Image (Expands to fit)
                       Positioned.fill(
-                        child: Image.asset(
-                          'assets/englishdifficulty.png',
+                        child: SvgPicture.asset(
+                          'assets/englishdifficulty.svg',
                           fit: BoxFit.cover, // This fills the screen while keeping the ratio
                         ),
                       ),
 
-                      //✅Back Button
+                      // ✅ Back Button
                       Positioned(
-                        left: screenWidth * 0.01,
+                        left: screenWidth * 0.05,
                         top: (screenWidth / aspectRatio) * 0.06,
-                        width: screenWidth * 0.11,
-                        height: (screenWidth / aspectRatio) * 0.13,
+                        width: screenWidth * 0.12,
+                        height: (screenWidth / aspectRatio) * 0.135,
                         child: GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const MyApp()),
+                                builder: (context) => const MyApp(),
+                              ),
                             );
                           },
                           child: Transform.rotate(
                             angle: -0.23,
                             child: Container(
-                              color: Colors.red.withOpacity(0.3),
+                              color: Colors.red.withOpacity(0.0),
                             ),
                           ),
                         ),
                       ),
+
                       // ✅ Easy Button
                       Positioned(
                         left: screenWidth * 0.18,
@@ -77,18 +81,20 @@ class BackgroundScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const MyApp()),
+                                builder: (context) => const EnglishEasy(),
+                              ),
                             );
                           },
                           child: Transform.rotate(
                             angle: 0.0,
                             child: Container(
-                              color: Colors.red.withOpacity(0.3),
+                              color: Colors.red.withOpacity(0.0),
                             ),
                           ),
                         ),
                       ),
-                       // ✅ Medium Button
+
+                      // ✅ Medium Button
                       Positioned(
                         left: screenWidth * 0.39,
                         top: (screenWidth / aspectRatio) * 0.345,
@@ -99,18 +105,20 @@ class BackgroundScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const MyApp()),
+                                builder: (context) => const MyApp(),
+                              ),
                             );
                           },
                           child: Transform.rotate(
                             angle: 0.0,
                             child: Container(
-                              color: Colors.red.withOpacity(0.3),
+                              color: Colors.red.withOpacity(0.0),
                             ),
                           ),
                         ),
                       ),
-                       // ✅ Hard Button
+
+                      // ✅ Hard Button
                       Positioned(
                         left: screenWidth * 0.63,
                         top: (screenWidth / aspectRatio) * 0.345,
@@ -121,13 +129,14 @@ class BackgroundScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const MyApp()),
+                                builder: (context) => const MyApp(),
+                              ),
                             );
                           },
                           child: Transform.rotate(
                             angle: 0.0,
                             child: Container(
-                              color: Colors.red.withOpacity(0.3),
+                              color: Colors.red.withOpacity(0.0),
                             ),
                           ),
                         ),

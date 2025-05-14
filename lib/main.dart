@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'subjects.dart';
 import 'credits.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:audioplayers/audioplayers.dart';
+
+final AudioPlayer backgroundAudioPlayer = AudioPlayer();
 
 void main() {
   runApp(const MyApp());
@@ -19,8 +23,41 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class BackgroundScreen extends StatelessWidget {
+class BackgroundScreen extends StatefulWidget {
   const BackgroundScreen({super.key});
+
+  @override
+  State<BackgroundScreen> createState() => _BackgroundScreenState();
+}
+
+class _BackgroundScreenState extends State<BackgroundScreen> {
+  // Audio player instance
+  late AudioPlayer _audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _playBackgroundMusic();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.stop();  // Stop the music when the screen is disposed
+    _audioPlayer.dispose();  // Dispose the player to release resources
+    super.dispose();
+  }
+
+  // Method to play background music
+  // Method to play background music
+// Method to play background music
+void _playBackgroundMusic() async {
+  await backgroundAudioPlayer.setReleaseMode(ReleaseMode.LOOP);
+  await backgroundAudioPlayer.play('assets/music/music.mp3', isLocal: true);
+}
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +81,8 @@ class BackgroundScreen extends StatelessWidget {
                     children: [
                       // ✅ Background Image (Expands to fit)
                       Positioned.fill(
-                        child: Image.asset(
-                          'assets/home.png',
+                        child: SvgPicture.asset(
+                          'assets/home.svg',
                           fit: BoxFit.cover, // This fills the screen while keeping the ratio
                         ),
                       ),
@@ -61,13 +98,14 @@ class BackgroundScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SubjectsPage()),
+                                builder: (context) => SubjectsPage(),
+                              ),
                             );
                           },
                           child: Transform.rotate(
                             angle: -0.1,
                             child: Container(
-                              color: Colors.red.withOpacity(0.3),
+                              color: Colors.red.withOpacity(0.0),
                             ),
                           ),
                         ),
@@ -84,13 +122,14 @@ class BackgroundScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SettingsPage()),
+                                builder: (context) => const SettingsPage(),
+                              ),
                             );
                           },
                           child: Transform.rotate(
                             angle: -0.05,
                             child: Container(
-                              color: Colors.blue.withOpacity(0.3),
+                              color: Colors.blue.withOpacity(0.0),
                             ),
                           ),
                         ),
@@ -107,13 +146,14 @@ class BackgroundScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const CreditsPage()),
+                                builder: (context) => const CreditsPage(),
+                              ),
                             );
                           },
                           child: Transform.rotate(
                             angle: 0,
                             child: Container(
-                              color: Colors.green.withOpacity(0.3),
+                              color: Colors.green.withOpacity(0.0),
                             ),
                           ),
                         ),
