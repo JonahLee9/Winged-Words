@@ -31,15 +31,57 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
   final List<AnimationController> controllers = [];
   final List<Animation<double>> animations = [];
 
+  late AnimationController correctAnimController;
+  late Animation<double> zoomAnimation;
+  late Animation<double> fadeAnimation;
+
+  String? correctTappedLetter;
+  bool isAnimatingCorrect = false;
+
   @override
   void initState() {
     super.initState();
     generateOptions();
     setupAnimations();
+
+    correctAnimController = AnimationController(
+      duration: const Duration(milliseconds: 2000), // slowed down to 2 seconds
+      vsync: this,
+    );
+
+    zoomAnimation = Tween<double>(begin: 1.0, end: 4.0).animate(
+      CurvedAnimation(parent: correctAnimController, curve: Curves.easeOut),
+    );
+
+    fadeAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: correctAnimController, curve: const Interval(0.5, 1.0)),
+    );
+
+    correctAnimController.addListener(() {
+      setState(() {}); // rebuild during animation
+    });
+
+    correctAnimController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          isAnimatingCorrect = false;
+          correctTappedLetter = null;
+          currentIndex++;
+          score++;
+          if (currentIndex < alphabet.length) {
+            generateOptions();
+            setupAnimations();
+          }
+        });
+
+        if (currentIndex == alphabet.length) {
+          _showWinDialog();
+        }
+      }
+    });
   }
 
   void setupAnimations() {
-    // Dispose previous ones
     for (var c in controllers) {
       c.dispose();
     }
@@ -47,13 +89,17 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
     animations.clear();
 
     for (int i = 0; i < 4; i++) {
+      // Slower bird oscillation: 3000ms to 5000ms
+      final duration = Duration(milliseconds: 3000 + random.nextInt(2000));
       final controller = AnimationController(
-        duration: Duration(seconds: 3 + random.nextInt(3)), // 3 to 5 seconds
+        duration: duration,
         vsync: this,
       )..repeat(reverse: true);
+
       final animation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: controller, curve: Curves.easeInOut),
       );
+
       controllers.add(controller);
       animations.add(animation);
     }
@@ -64,6 +110,7 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
     for (var c in controllers) {
       c.dispose();
     }
+    correctAnimController.dispose();
     super.dispose();
   }
 
@@ -80,20 +127,15 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
   }
 
   void handleAnswerTap(String selected) {
-    if (selected == alphabet[currentIndex]) {
+    if (selected == alphabet[currentIndex] && !isAnimatingCorrect) {
       setState(() {
-        currentIndex++;
-        score++;
-        if (currentIndex < alphabet.length) {
-          generateOptions();
-          setupAnimations();
-        }
+        correctTappedLetter = selected;
+        isAnimatingCorrect = true;
       });
 
-      if (currentIndex == alphabet.length) {
-        _showWinDialog();
-      }
-    } else {
+      correctAnimController.reset();
+      correctAnimController.forward();
+    } else if (selected != alphabet[currentIndex]) {
       setState(() {
         if (score > 0) score--;
       });
@@ -140,41 +182,91 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
       double startLeft = width * 0.05;
       double endLeft = width * 0.8;
 
-      birds.add(
-        AnimatedBuilder(
-          animation: animations[i],
-          builder: (context, child) {
-            double left = startLeft + (endLeft - startLeft) * animations[i].value;
-            return Positioned(
-              top: top,
-              left: left,
-              width: birdWidth,
-              height: birdHeight,
-              child: GestureDetector(
-                onTap: () => handleAnswerTap(options[i]),
-                child: Stack(
-                  children: [
-                    Image.asset('assets/birdsign.png', fit: BoxFit.contain),
-                    Positioned(
-                      bottom: birdHeight * 0.1,
-                      left: birdWidth * 0.25,
-                      child: Text(
-                        options[i],
-                        style: TextStyle(
-                          fontSize: birdWidth * 0.15,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Pangolin',
-                          color: Colors.black,
-                        ),
+      // Animate zoom+fade only on the correct tapped letter during animation
+      if (isAnimatingCorrect && options[i] == correctTappedLetter) {
+        birds.add(
+          Positioned(
+            top: height / 2 - (birdHeight * zoomAnimation.value) / 2,
+            left: width / 2 - (birdWidth * zoomAnimation.value) / 2,
+            width: birdWidth * zoomAnimation.value,
+            height: birdHeight * zoomAnimation.value,
+            child: Opacity(
+              opacity: fadeAnimation.value,
+              child: Stack(
+                children: [
+                  Image.asset('assets/birdsign.png', fit: BoxFit.contain),
+                  Positioned(
+                    bottom: birdHeight * 0.1,
+                    left: birdWidth * 0.25,
+                    child: Text(
+                      options[i],
+                      style: TextStyle(
+                        fontSize: birdWidth * 0.15,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Pangolin',
+                        color: Colors.green,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 12,
+                            color: Colors.greenAccent,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          },
-        ),
-      );
+            ),
+          ),
+        );
+      } else {
+        // Normal oscillation for other birds
+        birds.add(
+          AnimatedBuilder(
+            animation: animations[i],
+            builder: (context, child) {
+              double left = startLeft + (endLeft - startLeft) * animations[i].value;
+              return Positioned(
+                top: top,
+                left: left,
+                width: birdWidth,
+                height: birdHeight,
+                child: GestureDetector(
+                  onTap: () => handleAnswerTap(options[i]),
+                  child: Stack(
+                    children: [
+                      Image.asset('assets/birdsign.png', fit: BoxFit.contain),
+                      Positioned(
+                        bottom: birdHeight * 0.1,
+                        left: birdWidth * 0.25,
+                        child: Text(
+                          options[i],
+                          style: TextStyle(
+                            fontSize: birdWidth * 0.15,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Pangolin',
+                            color: options[i] == alphabet[currentIndex] ? Colors.green : Colors.black,
+                            shadows: options[i] == alphabet[currentIndex]
+                                ? [
+                                    Shadow(
+                                      blurRadius: 12,
+                                      color: Colors.greenAccent,
+                                      offset: Offset(0, 0),
+                                    ),
+                                  ]
+                                : null,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      }
     }
 
     return birds;
@@ -201,7 +293,7 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
               child: GestureDetector(
                 onTap: () => Navigator.of(context).popUntil((route) => route.isFirst),
                 child: Image.asset(
-                  'assets/back_button_cloud.png',  // Replace with the exact image file you uploaded
+                  'assets/back_button_cloud.png',
                   width: width * 0.15,
                   height: height * 0.1,
                   fit: BoxFit.contain,
