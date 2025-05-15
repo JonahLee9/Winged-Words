@@ -1,1 +1,0 @@
- build/web/manifest.json build/web/favicon.png:  /home/user/Winged-Words/web/index.html /home/user/Winged-Words/web/manifest.json /home/user/Winged-Words/web/favicon.png
