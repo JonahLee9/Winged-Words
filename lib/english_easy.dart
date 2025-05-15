@@ -45,20 +45,20 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
     setupAnimations();
 
     correctAnimController = AnimationController(
-      duration: const Duration(milliseconds: 2000), // slowed down to 2 seconds
+      duration: const Duration(milliseconds: 2500),
       vsync: this,
     );
 
-    zoomAnimation = Tween<double>(begin: 1.0, end: 4.0).animate(
+    zoomAnimation = Tween<double>(begin: 1.0, end: 4.5).animate(
       CurvedAnimation(parent: correctAnimController, curve: Curves.easeOut),
     );
 
     fadeAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: correctAnimController, curve: const Interval(0.5, 1.0)),
+      CurvedAnimation(parent: correctAnimController, curve: const Interval(0.6, 1.0)),
     );
 
     correctAnimController.addListener(() {
-      setState(() {}); // rebuild during animation
+      setState(() {});
     });
 
     correctAnimController.addStatusListener((status) {
@@ -182,8 +182,8 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
       double startLeft = width * 0.05;
       double endLeft = width * 0.8;
 
-      // Animate zoom+fade only on the correct tapped letter during animation
       if (isAnimatingCorrect && options[i] == correctTappedLetter) {
+        // Zoom + fade with green glow on sign and letter centered
         birds.add(
           Positioned(
             top: height / 2 - (birdHeight * zoomAnimation.value) / 2,
@@ -193,21 +193,33 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
             child: Opacity(
               opacity: fadeAnimation.value,
               child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  Image.asset('assets/birdsign.png', fit: BoxFit.contain),
-                  Positioned(
-                    bottom: birdHeight * 0.1,
-                    left: birdWidth * 0.25,
+                  // Glow effect on the sign with green shadow
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.green.withOpacity(0.8),
+                          blurRadius: 25,
+                          spreadRadius: 8,
+                        ),
+                      ],
+                    ),
+                    child: Image.asset('assets/birdsign.png', fit: BoxFit.contain),
+                  ),
+                  Center(
                     child: Text(
                       options[i],
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: birdWidth * 0.15,
+                        fontSize: birdWidth * 0.18 * zoomAnimation.value, // scale font with sign
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Pangolin',
                         color: Colors.green,
                         shadows: [
                           Shadow(
-                            blurRadius: 12,
+                            blurRadius: 15,
                             color: Colors.greenAccent,
                             offset: Offset(0, 0),
                           ),
@@ -221,7 +233,6 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
           ),
         );
       } else {
-        // Normal oscillation for other birds
         birds.add(
           AnimatedBuilder(
             animation: animations[i],
@@ -281,12 +292,9 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
 
         return Stack(
           children: [
-            // Background
             Positioned.fill(
               child: SvgPicture.asset('assets/mathpage.svg', fit: BoxFit.cover),
             ),
-
-            // Back button (cloud-shaped design)
             Positioned(
               top: height * 0.03,
               left: width * 0.03,
@@ -300,8 +308,6 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
                 ),
               ),
             ),
-
-            // Prompt
             Positioned(
               top: height * 0.08,
               left: width * 0.1,
@@ -323,8 +329,6 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
                 ),
               ),
             ),
-
-            // Score
             Positioned(
               top: height * 0.03,
               right: width * 0.05,
@@ -338,8 +342,6 @@ class _EnglishEasyGameState extends State<EnglishEasyGame>
                 ),
               ),
             ),
-
-            // Birds
             ...generateBirds(width, height),
           ],
         );
